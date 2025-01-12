@@ -39,25 +39,29 @@ namespace ScannerDemo
             // tbMailAddress
             // 
             this.tbMailAddress.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbMailAddress.Location = new System.Drawing.Point(76, 102);
+            this.tbMailAddress.Location = new System.Drawing.Point(57, 77);
+            this.tbMailAddress.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tbMailAddress.Name = "tbMailAddress";
-            this.tbMailAddress.Size = new System.Drawing.Size(1283, 49);
+            this.tbMailAddress.Size = new System.Drawing.Size(963, 49);
             this.tbMailAddress.TabIndex = 0;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(76, 26);
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(57, 21);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(381, 62);
+            this.label1.Size = new System.Drawing.Size(596, 31);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Email senden an.\r\nEmail Addresse hier eingeben:";
+            this.label1.Text = "Email senden an. Email Addresse hier eingeben:";
             // 
             // btnOk
             // 
-            this.btnOk.Location = new System.Drawing.Point(82, 190);
+            this.btnOk.Location = new System.Drawing.Point(63, 175);
+            this.btnOk.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnOk.Name = "btnOk";
-            this.btnOk.Size = new System.Drawing.Size(363, 52);
+            this.btnOk.Size = new System.Drawing.Size(272, 42);
             this.btnOk.TabIndex = 2;
             this.btnOk.Text = "Addresse ändern";
             this.btnOk.UseVisualStyleBackColor = true;
@@ -65,9 +69,10 @@ namespace ScannerDemo
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(1024, 190);
+            this.btnCancel.Location = new System.Drawing.Point(769, 175);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(335, 52);
+            this.btnCancel.Size = new System.Drawing.Size(251, 42);
             this.btnCancel.TabIndex = 3;
             this.btnCancel.Text = "abbrechen";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -75,9 +80,10 @@ namespace ScannerDemo
             // 
             // btnDefault
             // 
-            this.btnDefault.Location = new System.Drawing.Point(550, 190);
+            this.btnDefault.Location = new System.Drawing.Point(417, 175);
+            this.btnDefault.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnDefault.Name = "btnDefault";
-            this.btnDefault.Size = new System.Drawing.Size(335, 52);
+            this.btnDefault.Size = new System.Drawing.Size(251, 42);
             this.btnDefault.TabIndex = 4;
             this.btnDefault.Text = "an Carsten";
             this.btnDefault.UseVisualStyleBackColor = true;
@@ -85,15 +91,17 @@ namespace ScannerDemo
             // 
             // EmailAdresse
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1428, 308);
+            this.BackColor = System.Drawing.Color.Bisque;
+            this.ClientSize = new System.Drawing.Size(1071, 248);
             this.Controls.Add(this.btnDefault);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.tbMailAddress);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "EmailAdresse";

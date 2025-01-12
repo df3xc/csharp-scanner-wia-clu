@@ -80,6 +80,7 @@
             // 
             // btnExit
             // 
+            this.btnExit.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnExit.Location = new System.Drawing.Point(22, 725);
             this.btnExit.Margin = new System.Windows.Forms.Padding(6);
             this.btnExit.Name = "btnExit";
@@ -101,6 +102,7 @@
             // 
             // btnSetMailAddress
             // 
+            this.btnSetMailAddress.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSetMailAddress.Location = new System.Drawing.Point(22, 636);
             this.btnSetMailAddress.Margin = new System.Windows.Forms.Padding(2);
             this.btnSetMailAddress.Name = "btnSetMailAddress";
@@ -112,6 +114,8 @@
             // 
             // btnListDevices
             // 
+            this.btnListDevices.FlatAppearance.BorderSize = 3;
+            this.btnListDevices.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnListDevices.Location = new System.Drawing.Point(22, 198);
             this.btnListDevices.Margin = new System.Windows.Forms.Padding(6);
             this.btnListDevices.Name = "btnListDevices";
@@ -123,6 +127,7 @@
             // 
             // btnEmail
             // 
+            this.btnEmail.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnEmail.Location = new System.Drawing.Point(18, 366);
             this.btnEmail.Margin = new System.Windows.Forms.Padding(2);
             this.btnEmail.Name = "btnEmail";
@@ -134,6 +139,9 @@
             // 
             // btnScan
             // 
+            this.btnScan.FlatAppearance.BorderColor = System.Drawing.Color.Blue;
+            this.btnScan.FlatAppearance.BorderSize = 2;
+            this.btnScan.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnScan.Location = new System.Drawing.Point(20, 279);
             this.btnScan.Margin = new System.Windows.Forms.Padding(6);
             this.btnScan.Name = "btnScan";
@@ -146,10 +154,11 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(12, 46);
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(16, 30);
             this.label4.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(297, 25);
+            this.label4.Size = new System.Drawing.Size(374, 31);
             this.label4.TabIndex = 8;
             this.label4.Text = "Verfügbare Scanner / Drucker";
             // 

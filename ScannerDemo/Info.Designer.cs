@@ -46,6 +46,7 @@ namespace ScannerDemo
             // 
             // btnOk
             // 
+            this.btnOk.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnOk.Location = new System.Drawing.Point(414, 207);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(141, 59);
@@ -58,6 +59,7 @@ namespace ScannerDemo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.Khaki;
             this.ClientSize = new System.Drawing.Size(996, 287);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.info_text);
@@ -70,8 +72,7 @@ namespace ScannerDemo
         }
 
         #endregion
-
-        public System.Windows.Forms.Label info_text;
         private System.Windows.Forms.Button btnOk;
+        private System.Windows.Forms.Label info_text;
     }
 }

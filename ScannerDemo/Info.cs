@@ -18,7 +18,12 @@ namespace ScannerDemo
             btnOk.Visible = false;
         }
 
-        public void showInfo(Boolean showButton)
+        public void InfoText(string text)
+        {
+            info_text.Text = text;
+        }
+
+        public void showInfoDialog(Boolean showButton)
         {
             btnOk.Visible = showButton;
             this.ShowDialog();
@@ -27,7 +32,7 @@ namespace ScannerDemo
         private void btnOk_Click(object sender, EventArgs e)
         {
             if(btnOk.Visible)
-            { this.Close(); }
+            { this.Hide(); }
 
         }
     }

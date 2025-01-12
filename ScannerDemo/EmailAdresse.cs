@@ -5,7 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace ScannerDemo
@@ -51,6 +51,8 @@ namespace ScannerDemo
         private void btnDefault_Click(object sender, EventArgs e)
         {
             tbMailAddress.Text = "carsten.lueck@outlook.com";
+            Application.DoEvents();
+            Thread.Sleep(1000);
             result = DialogResult.OK;
             this.Close();
 

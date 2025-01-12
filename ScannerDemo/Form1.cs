@@ -33,8 +33,8 @@ namespace ScannerDemo
             {
                 timer1.Enabled = true;
                 InfoDialog info = new InfoDialog();
-                info.info_text.Text = "Es wurde kein Scanner gefunden. \n\nDrucker einschalten und mit Computer verbinden";
-                info.showInfo(true);
+                info.InfoText("Es wurde kein Scanner gefunden. \n\nDrucker einschalten und mit Computer verbinden");
+                info.showInfoDialog(true);
                 info.Close();
             }
 
@@ -100,14 +100,6 @@ namespace ScannerDemo
             this.Invoke(new MethodInvoker(delegate ()
             {
                 //device = listBox1.SelectedItem as Scanner;
-                if (ListScanners() == false)
-                {
-                    timer1.Enabled = true;
-                    InfoDialog info = new InfoDialog();
-                    info.info_text.Text = "Es wurde kein Scanner gefunden. \n\nDrucker einschalten und mit Computer verbinden";
-                    info.showInfo(true);
-                    info.Close();
-                }
                 if (listBox1.Items.Count > 0) device = listBox1.Items[0] as Scanner;
             }));
 
@@ -177,15 +169,15 @@ namespace ScannerDemo
 
             if ( String.IsNullOrEmpty(document_image_path))
             {
-                info.info_text.Text = "Bitte Dokument scannen";
-                info.showInfo(true);
+                info.InfoText("Bitte Dokument scannen");
+                info.showInfoDialog(true);
                 //MessageBox.Show("Bitte Dokument scannen", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
             WebTest.sendmail_outlook mail = new WebTest.sendmail_outlook();
 
-            info.info_text.Text = "Sende Email an " + DestMailAddress;
+            info.InfoText("Sende Email an " + DestMailAddress);
             info.Show();
             mail_send = mail.sentOutlookMail(DestMailAddress, "Scanned Document", "Angefügtes Dokument beachten", document_image_path);
 
@@ -194,8 +186,9 @@ namespace ScannerDemo
 
             if (mail_send == true)
             {
-                infoMailSend.info_text.Text = "Email wurde gesendet\n\nEine Kopie befindet sich in GESENDETE ELEMENTE in Outlook";
-                infoMailSend.showInfo(true);
+                infoMailSend.InfoText("Email wurde gesendet\n\nEine Kopie befindet sich in GESENDETE ELEMENTE in Outlook");
+                infoMailSend.showInfoDialog(true);
+                infoMailSend.Close();
             }
             else
             {
@@ -208,6 +201,16 @@ namespace ScannerDemo
 
         private void btnScan_Click(object sender, EventArgs e)
         {
+            if (ListScanners() == false)
+            {
+                timer1.Enabled = true;
+                InfoDialog info = new InfoDialog();
+                info.InfoText("Es wurde kein Scanner gefunden. \n\nDrucker einschalten und mit Computer verbinden");
+                info.showInfoDialog(true);
+                info.Close();
+                return;
+            }
+
             dt = DateTime.Now;
             string time = dt.ToString("yy-MM-dd HH-mm-ss");
             image_filename = "scan2wia " + time;
@@ -220,8 +223,8 @@ namespace ScannerDemo
             {
                 timer1.Enabled = true;
                 InfoDialog info = new InfoDialog();
-                info.info_text.Text = "Es wurde kein Scanner gefunden. \n\nDrucker einschalten und mit Computer verbinden";
-                info.showInfo(true);
+                info.InfoText("Es wurde kein Scanner gefunden. \n\nDrucker einschalten und mit Computer verbinden");
+                info.showInfoDialog(true);
                 info.Close();
             }
         }
@@ -257,11 +260,11 @@ namespace ScannerDemo
         {
             if (ListScanners() == true)
             { 
-            timer1.Enabled = false;
-            InfoDialog info = new InfoDialog();
-            info.info_text.Text = "Scanner wurde gefunden. Jetzt Dokument scannen.";
-            info.showInfo(true);
-            info.Close();
+                timer1.Enabled = false;
+                InfoDialog info = new InfoDialog();
+                info.InfoText ("Scanner wurde gefunden. Jetzt Dokument scannen.");
+                info.showInfoDialog(true);
+                info.Close();
             }
         }
     }
