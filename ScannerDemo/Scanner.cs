@@ -34,6 +34,11 @@ namespace ScannerDemo
             this._deviceInfo = deviceInfo;
         }
 
+        public void setColorMode ( int mode)
+        {
+            color_mode = mode;
+        }
+
         /// <summary>
         /// Scan an image with the specified format
         /// </summary>

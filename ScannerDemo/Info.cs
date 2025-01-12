@@ -15,6 +15,20 @@ namespace ScannerDemo
         public InfoDialog()
         {
             InitializeComponent();
+            btnOk.Visible = false;
+        }
+
+        public void showInfo(Boolean showButton)
+        {
+            btnOk.Visible = showButton;
+            this.ShowDialog();
+        }
+
+        private void btnOk_Click(object sender, EventArgs e)
+        {
+            if(btnOk.Visible)
+            { this.Close(); }
+
         }
     }
 }

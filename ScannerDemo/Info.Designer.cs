@@ -30,23 +30,38 @@ namespace ScannerDemo
         private void InitializeComponent()
         {
             this.info_text = new System.Windows.Forms.Label();
+            this.btnOk = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // info_text
             // 
             this.info_text.AutoSize = true;
-            this.info_text.Location = new System.Drawing.Point(67, 102);
+            this.info_text.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.info_text.Location = new System.Drawing.Point(59, 55);
+            this.info_text.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.info_text.Name = "info_text";
             this.info_text.Size = new System.Drawing.Size(86, 31);
             this.info_text.TabIndex = 0;
             this.info_text.Text = "label1";
             // 
+            // btnOk
+            // 
+            this.btnOk.Location = new System.Drawing.Point(414, 207);
+            this.btnOk.Name = "btnOk";
+            this.btnOk.Size = new System.Drawing.Size(141, 59);
+            this.btnOk.TabIndex = 1;
+            this.btnOk.Text = "ok";
+            this.btnOk.UseVisualStyleBackColor = true;
+            this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
+            // 
             // InfoDialog
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1328, 279);
+            this.ClientSize = new System.Drawing.Size(996, 287);
+            this.Controls.Add(this.btnOk);
             this.Controls.Add(this.info_text);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "InfoDialog";
             this.Text = "Info";
             this.ResumeLayout(false);
@@ -57,5 +72,6 @@ namespace ScannerDemo
         #endregion
 
         public System.Windows.Forms.Label info_text;
+        private System.Windows.Forms.Button btnOk;
     }
 }

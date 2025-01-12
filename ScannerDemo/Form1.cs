@@ -15,9 +15,11 @@ namespace ScannerDemo
 {
     public partial class Form1 : Form
     {
-        string document_image_path;
+        string document_image_path = "";
         string output_path;
         string image_filename;
+        int color_mode = 4;
+        DateTime dt = new DateTime();
         string DestMailAddress = "carsten.lueck@outlook.com";
 
         public Form1()
@@ -27,18 +29,30 @@ namespace ScannerDemo
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            ListScanners();
+            if (ListScanners() == false)
+            {
+                timer1.Enabled = true;
+                InfoDialog info = new InfoDialog();
+                info.info_text.Text = "Es wurde kein Scanner gefunden. \n\nDrucker einschalten und mit Computer verbinden";
+                info.showInfo(true);
+                info.Close();
+            }
 
             // Set start output folder TMP
             output_path = Path.GetTempPath();
-            image_filename = "theScan";
+            image_filename = "scan2wia";
             // Set JPEG as default
             //comboBox1.SelectedIndex = 1;
 
+            // delete old scan files
+            DirectoryInfo dir = new DirectoryInfo(output_path);
+            dir.EnumerateFiles("scan2wia*.jpeg").ToList().ForEach(f => f.Delete());
+
         }
 
-        private void ListScanners()
+        private Boolean ListScanners()
         {
+            Boolean result = false;
             // Clear the ListBox.
             listBox1.Items.Clear();
 
@@ -63,14 +77,15 @@ namespace ScannerDemo
 
             if (deviceManager.DeviceInfos.Count == 0)
             {
-
-                MessageBox.Show("Es wurde kein Scanner gefunden. \n\nDrucker einschalten und mit Computer verbinden", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 btnListDevices.Enabled = true;
             }
             else
             {
                 btnListDevices.Enabled = false;
+                timer1.Enabled = false;
+                result = true;
             }
+            return (result);
         }
 
         private void TriggerScan()
@@ -85,9 +100,15 @@ namespace ScannerDemo
             this.Invoke(new MethodInvoker(delegate ()
             {
                 //device = listBox1.SelectedItem as Scanner;
-                ListScanners();
+                if (ListScanners() == false)
+                {
+                    timer1.Enabled = true;
+                    InfoDialog info = new InfoDialog();
+                    info.info_text.Text = "Es wurde kein Scanner gefunden. \n\nDrucker einschalten und mit Computer verbinden";
+                    info.showInfo(true);
+                    info.Close();
+                }
                 if (listBox1.Items.Count > 0) device = listBox1.Items[0] as Scanner;
-
             }));
 
             if (listBox1.Items.Count == 0)
@@ -96,7 +117,7 @@ namespace ScannerDemo
                 return;
             }
 
-
+            device.setColorMode(color_mode);
 
             ImageFile image = new ImageFile();
             string imageExtension = "";
@@ -131,8 +152,9 @@ namespace ScannerDemo
                 //        break;
                 //}
             }));
-            
-            
+
+            //pictureBox1.Image = null;
+
             // Save the image
             document_image_path = Path.Combine(output_path, image_filename + imageExtension);
 
@@ -140,7 +162,7 @@ namespace ScannerDemo
             {
                 File.Delete(document_image_path);
             }
-
+            
             image.SaveFile(document_image_path);
 
             pictureBox1.Image = new Bitmap(document_image_path);
@@ -151,11 +173,13 @@ namespace ScannerDemo
         {
             Boolean mail_send = false;
             InfoDialog info = new InfoDialog();
+            InfoDialog infoMailSend = new InfoDialog();
 
-
-            if (document_image_path == null)
+            if ( String.IsNullOrEmpty(document_image_path))
             {
-                MessageBox.Show("Bitte Dokument scannen", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                info.info_text.Text = "Bitte Dokument scannen";
+                info.showInfo(true);
+                //MessageBox.Show("Bitte Dokument scannen", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -165,35 +189,47 @@ namespace ScannerDemo
             info.Show();
             mail_send = mail.sentOutlookMail(DestMailAddress, "Scanned Document", "Angefügtes Dokument beachten", document_image_path);
 
+            Thread.Sleep(3000);
+            info.Close();
+
             if (mail_send == true)
             {
-                info.info_text.Text = "Email wurde gesendet";
-                Thread.Sleep(3000);
+                infoMailSend.info_text.Text = "Email wurde gesendet\n\nEine Kopie befindet sich in GESENDETE ELEMENTE in Outlook";
+                infoMailSend.showInfo(true);
             }
             else
             {
                 MessageBox.Show("Mail konnte nicht gesendet werden", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
-            info.Close();
+
         }
 
 
         private void btnScan_Click(object sender, EventArgs e)
         {
+            dt = DateTime.Now;
+            string time = dt.ToString("yy-MM-dd HH-mm-ss");
+            image_filename = "scan2wia " + time;
             Task.Factory.StartNew(StartScanning).ContinueWith(result => TriggerScan());
         }
 
         private void btnListDevices_Click(object sender, EventArgs e)
         {
-            ListScanners();
+            if (ListScanners() == false)
+            {
+                timer1.Enabled = true;
+                InfoDialog info = new InfoDialog();
+                info.info_text.Text = "Es wurde kein Scanner gefunden. \n\nDrucker einschalten und mit Computer verbinden";
+                info.showInfo(true);
+                info.Close();
+            }
         }
 
         private void btnSetMailAddress_Click(object sender, EventArgs e)
         {
             EmailAdresse mailAdress = new EmailAdresse();
             DialogResult result = new DialogResult();
-
 
             mailAdress.setAddress(DestMailAddress);
             result = mailAdress.showDialogBox();
@@ -202,7 +238,31 @@ namespace ScannerDemo
             {
                 DestMailAddress = mailAdress.getAddress();
             }
+        }
 
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void cbScanColored_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbScanColored.Checked == true)
+            { color_mode = 1; }
+            else
+            { color_mode = 4; }
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            if (ListScanners() == true)
+            { 
+            timer1.Enabled = false;
+            InfoDialog info = new InfoDialog();
+            info.info_text.Text = "Scanner wurde gefunden. Jetzt Dokument scannen.";
+            info.showInfo(true);
+            info.Close();
+            }
         }
     }
 }
