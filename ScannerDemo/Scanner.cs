@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WIA;
 using System.Windows.Forms;
+using WebTest;
 
 namespace ScannerDemo
 {
@@ -23,9 +24,10 @@ namespace ScannerDemo
 
         private readonly DeviceInfo _deviceInfo;
         private int resolution = 300;
-        private int width_pixel = 1250;
-        private int height_pixel = 1700;
-        private int color_mode = 1;
+        private int width_pixel = 4800;
+        private int height_pixel = 6000;
+        // private int color_mode = 0;  // CLU : colored scan
+        private int color_mode = 4;  // CLU : scane is black and white
 
         public Scanner(DeviceInfo deviceInfo)
         {

@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WIA;
@@ -14,6 +15,11 @@ namespace ScannerDemo
 {
     public partial class Form1 : Form
     {
+        string document_image_path;
+        string output_path;
+        string image_filename;
+        string DestMailAddress = "carsten.lueck@outlook.com";
+
         public Form1()
         {
             InitializeComponent();
@@ -24,9 +30,10 @@ namespace ScannerDemo
             ListScanners();
 
             // Set start output folder TMP
-            textBox1.Text = Path.GetTempPath();
+            output_path = Path.GetTempPath();
+            image_filename = "theScan";
             // Set JPEG as default
-            comboBox1.SelectedIndex = 1;
+            //comboBox1.SelectedIndex = 1;
 
         }
 
@@ -53,11 +60,17 @@ namespace ScannerDemo
                     new Scanner(deviceManager.DeviceInfos[i])
                 );
             }
-        }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            Task.Factory.StartNew(StartScanning).ContinueWith(result => TriggerScan());
+            if (deviceManager.DeviceInfos.Count == 0)
+            {
+
+                MessageBox.Show("Es wurde kein Scanner gefunden. \n\nDrucker einschalten und mit Computer verbinden", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                btnListDevices.Enabled = true;
+            }
+            else
+            {
+                btnListDevices.Enabled = false;
+            }
         }
 
         private void TriggerScan()
@@ -71,78 +84,125 @@ namespace ScannerDemo
 
             this.Invoke(new MethodInvoker(delegate ()
             {
-                device = listBox1.SelectedItem as Scanner;
+                //device = listBox1.SelectedItem as Scanner;
+                ListScanners();
+                if (listBox1.Items.Count > 0) device = listBox1.Items[0] as Scanner;
+
             }));
 
-            if (device == null)
+            if (listBox1.Items.Count == 0)
             {
-                MessageBox.Show("You need to select first an scanner device from the list",
-                                "Warning",
-                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }else if(String.IsNullOrEmpty(textBox2.Text))
-            {
-                MessageBox.Show("Provide a filename",
-                                "Warning",
-                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                //MessageBox.Show("Bitte Scanner einschalten", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+
+
 
             ImageFile image = new ImageFile();
             string imageExtension = "";
 
             this.Invoke(new MethodInvoker(delegate ()
             {
-                switch (comboBox1.SelectedIndex)
-                {
-                    case 0:
-                        image = device.ScanImage(WIA.FormatID.wiaFormatPNG);
-                        imageExtension = ".png";
-                        break;
-                    case 1:
-                        image = device.ScanImage(WIA.FormatID.wiaFormatJPEG);
-                        imageExtension = ".jpeg";
-                        break;
-                    case 2:
-                        image = device.ScanImage(WIA.FormatID.wiaFormatBMP);
-                        imageExtension = ".bmp";
-                        break;
-                    case 3:
-                        image = device.ScanImage(WIA.FormatID.wiaFormatGIF);
-                        imageExtension = ".gif";
-                        break;
-                    case 4:
-                        image = device.ScanImage(WIA.FormatID.wiaFormatTIFF);
-                        imageExtension = ".tiff";
-                        break;
-                }
+
+                image = device.ScanImage(WIA.FormatID.wiaFormatJPEG);
+                imageExtension = ".jpeg";
+
+                //switch (comboBox1.SelectedIndex)
+                //{
+                //    case 0:
+                //        image = device.ScanImage(WIA.FormatID.wiaFormatPNG);
+                //        imageExtension = ".png";
+                //        break;
+                //    case 1:
+                //        image = device.ScanImage(WIA.FormatID.wiaFormatJPEG);
+                //        imageExtension = ".jpeg";
+                //        break;
+                //    case 2:
+                //        image = device.ScanImage(WIA.FormatID.wiaFormatBMP);
+                //        imageExtension = ".bmp";
+                //        break;
+                //    case 3:
+                //        image = device.ScanImage(WIA.FormatID.wiaFormatGIF);
+                //        imageExtension = ".gif";
+                //        break;
+                //    case 4:
+                //        image = device.ScanImage(WIA.FormatID.wiaFormatTIFF);
+                //        imageExtension = ".tiff";
+                //        break;
+                //}
             }));
             
             
             // Save the image
-            var path = Path.Combine(textBox1.Text, textBox2.Text + imageExtension);
+            document_image_path = Path.Combine(output_path, image_filename + imageExtension);
 
-            if (File.Exists(path))
+            if (File.Exists(document_image_path))
             {
-                File.Delete(path);
+                File.Delete(document_image_path);
             }
 
-            image.SaveFile(path);
+            image.SaveFile(document_image_path);
 
-            pictureBox1.Image = new Bitmap(path);
+            pictureBox1.Image = new Bitmap(document_image_path);
         }
 
-        private void button2_Click(object sender, EventArgs e)
+
+        private void btnEmail_Click(object sender, EventArgs e)
         {
-            FolderBrowserDialog folderDlg = new FolderBrowserDialog();
-            folderDlg.ShowNewFolderButton = true;
-            DialogResult result = folderDlg.ShowDialog();
+            Boolean mail_send = false;
+            InfoDialog info = new InfoDialog();
 
-            if (result == DialogResult.OK)
+
+            if (document_image_path == null)
             {
-                textBox1.Text = folderDlg.SelectedPath;
+                MessageBox.Show("Bitte Dokument scannen", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
+
+            WebTest.sendmail_outlook mail = new WebTest.sendmail_outlook();
+
+            info.info_text.Text = "Sende Email an " + DestMailAddress;
+            info.Show();
+            mail_send = mail.sentOutlookMail(DestMailAddress, "Scanned Document", "Angefügtes Dokument beachten", document_image_path);
+
+            if (mail_send == true)
+            {
+                info.info_text.Text = "Email wurde gesendet";
+                Thread.Sleep(3000);
+            }
+            else
+            {
+                MessageBox.Show("Mail konnte nicht gesendet werden", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            info.Close();
         }
-         
+
+
+        private void btnScan_Click(object sender, EventArgs e)
+        {
+            Task.Factory.StartNew(StartScanning).ContinueWith(result => TriggerScan());
+        }
+
+        private void btnListDevices_Click(object sender, EventArgs e)
+        {
+            ListScanners();
+        }
+
+        private void btnSetMailAddress_Click(object sender, EventArgs e)
+        {
+            EmailAdresse mailAdress = new EmailAdresse();
+            DialogResult result = new DialogResult();
+
+
+            mailAdress.setAddress(DestMailAddress);
+            result = mailAdress.showDialogBox();
+
+            if(result == DialogResult.OK)
+            {
+                DestMailAddress = mailAdress.getAddress();
+            }
+
+        }
     }
 }
